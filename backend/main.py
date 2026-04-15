@@ -1,6 +1,10 @@
+import os
+import pytesseract
+from PIL import Image
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
-import os
+
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 app = FastAPI()
 
@@ -24,16 +28,24 @@ UPLOAD_DIR = "uploads"
 
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
-    file_path = os.path.join(UPLOAD_DIR, file.filename)
+    file_path = os.path.join("uploads", file.filename)
 
-    # Save file to disk
     with open(file_path, "wb") as buffer:
         content = await file.read()
         buffer.write(content)
 
+    try:
+        image = Image.open(file_path)
+        extracted_text = pytesseract.image_to_string(image)
+        cleaned_text = extracted_text.strip().replace("\n", " ")
+    except Exception as e:
+        extracted_text = f"Error extracting text: {str(e)}"
+
     return {
-        "filename": file.filename,
-        "saved_to": file_path,
-        "size_bytes": len(content),
-        "message": "File saved successfully"
+    "filename": file.filename,
+    "saved_to": file_path,
+    "size_bytes": len(content),
+    "raw_text": extracted_text,
+    "cleaned_text": cleaned_text,
+    "message": "File processed successfully"
     }
