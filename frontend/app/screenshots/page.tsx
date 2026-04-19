@@ -54,6 +54,11 @@ export default function ScreenshotsPage() {
               key={index}
               className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6"
             >
+              <img
+                src={`http://127.0.0.1:8000/${shot.saved_to.replace("\\", "/")}`}
+                alt={shot.filename}
+                className="mt-4 w-full max-w-md rounded-lg border border-zinc-700"
+               />
               <h2 className="text-xl font-medium">{shot.filename}</h2>
               <p className="mt-2 text-sm text-zinc-400">
                 Category: <span className="text-white">{shot.category}</span>
