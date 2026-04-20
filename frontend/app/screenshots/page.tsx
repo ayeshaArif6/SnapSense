@@ -11,11 +11,14 @@ type Screenshot = {
   category: string;
 };
 
+const categories = ['all', 'receipt', 'shopping', 'travel', 'other'];
+
 export default function ScreenshotsPage() {
   const [screenshots, setScreenshots] = useState<Screenshot[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
 
   useEffect(() => {
     const fetchScreenshots = async () => {
@@ -37,17 +40,20 @@ export default function ScreenshotsPage() {
   const filteredScreenshots = useMemo(() => {
     const query = search.toLowerCase().trim();
 
-    if (!query) return screenshots;
-
     return screenshots.filter((shot) => {
-      return (
+      const matchesSearch =
+        !query ||
         shot.filename.toLowerCase().includes(query) ||
         shot.category.toLowerCase().includes(query) ||
         shot.cleaned_text.toLowerCase().includes(query) ||
-        shot.raw_text.toLowerCase().includes(query)
-      );
+        shot.raw_text.toLowerCase().includes(query);
+
+      const matchesCategory =
+        selectedCategory === 'all' || shot.category.toLowerCase() === selectedCategory;
+
+      return matchesSearch && matchesCategory;
     });
-  }, [screenshots, search]);
+  }, [screenshots, search, selectedCategory]);
 
   return (
     <main className="min-h-screen bg-black px-6 py-12 text-white">
@@ -66,6 +72,31 @@ export default function ScreenshotsPage() {
             className="w-full rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3 text-white outline-none placeholder:text-zinc-500"
           />
         </div>
+
+        <div className="mt-4 flex flex-wrap gap-3">
+          {categories.map((category) => {
+            const isActive = selectedCategory === category;
+
+            return (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+                  isActive
+                    ? 'bg-white text-black'
+                    : 'border border-zinc-700 bg-zinc-900 text-white hover:bg-zinc-800'
+                }`}
+              >
+                {category.charAt(0).toUpperCase() + category.slice(1)}
+              </button>
+            );
+          })}
+        </div>
+
+        <p className="mt-4 text-sm text-zinc-400">
+          Showing {filteredScreenshots.length} screenshot
+          {filteredScreenshots.length !== 1 ? 's' : ''}
+        </p>
 
         {loading && <p className="mt-8">Loading...</p>}
         {error && <p className="mt-8 text-red-400">{error}</p>}
