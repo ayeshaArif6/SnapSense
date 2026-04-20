@@ -1,6 +1,6 @@
 import os
 import pytesseract
-from PIL import Image
+from PIL import Image, ImageOps
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -45,7 +45,22 @@ def categorize(text):
     else:
         return "other"
     
-    
+
+def extract_text_from_image(file_path):
+    image = Image.open(file_path)
+
+    gray = image.convert("L")
+    text_general = pytesseract.image_to_string(gray, config="--psm 6")
+
+    enlarged = gray.resize((gray.width * 2, gray.height * 2))
+    high_contrast = ImageOps.autocontrast(enlarged)
+    thresholded = high_contrast.point(lambda x: 0 if x < 170 else 255, "1")
+    text_receipt = pytesseract.image_to_string(thresholded, config="--psm 4")
+
+    if len(text_receipt.strip()) > len(text_general.strip()):
+        return text_receipt
+    return text_general
+
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
     file_path = os.path.join(UPLOAD_DIR, file.filename)
@@ -55,11 +70,9 @@ async def upload_file(file: UploadFile = File(...)):
         buffer.write(content)
 
     try:
-        image = Image.open(file_path)
-        image = image.convert("L")
-        image = image.point(lambda x: 0 if x < 150 else 255, "1")
-        extracted_text = pytesseract.image_to_string(image, config="--psm 6")
-        cleaned_text = extracted_text.strip().replace("\n", " ")
+        extracted_text = extract_text_from_image(file_path)
+        lines = [line.strip() for line in extracted_text.splitlines() if line.strip()]
+        cleaned_text = " | ".join(lines)
     except Exception as e:
         extracted_text = f"Error extracting text: {str(e)}"
         cleaned_text = ""
