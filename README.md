@@ -3,13 +3,13 @@ SnapSense is an AI-powered screenshot organizer that automatically categorizes, 
 Instead of scrolling endlessly through your camera roll, SnapSense turns screenshots into structured, searchable data.
 
 ## Features
-📤 Upload screenshots from a web interface.
-🧠 OCR (Optical Character Recognition) to extract text from images.
-🏷 Automatic categorization (receipt, shopping, travel, etc.).
-🔍 Search screenshots by extracted text.
-🎯 Category-based filtering.
-🖼 Image preview gallery.
-💾 Persistent storage using Supabase (PostgreSQL).
+- 📤 Upload screenshots from a web interface.
+- 🧠 OCR (Optical Character Recognition) to extract text from images.
+- 🏷 Automatic categorization (receipt, shopping, travel, etc.).
+- 🔍 Search screenshots by extracted text.
+- 🎯 Category-based filtering.
+- 🖼 Image preview gallery.
+- 💾 Persistent storage using Supabase (PostgreSQL).
 
 ## How it works
 1. User uploads a screenshot.
