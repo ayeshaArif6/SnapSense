@@ -20,18 +20,20 @@ Instead of scrolling endlessly through your camera roll, SnapSense turns screens
 6. Frontend displays and allows search/filtering.
 
 ## Tech Stack
-Frontend
 
-Next.js (App Router)
-React
-Tailwind CSS
-
-Backend
-
-FastAPI (Python)
-Tesseract OCR
-PIL (image preprocessing)
-
-Database
-
-Supabase (PostgreSQL)
+Frontend:
+    ```bash
+    Next.js (App Router)
+    React
+    Tailwind CSS
+    ```
+Backend:
+    ```bash
+   FastAPI (Python)
+   Tesseract OCR
+   PIL (image preprocessing)
+    ```
+Database:
+  ```bash
+  Supabase (PostgreSQL)
+    ```
