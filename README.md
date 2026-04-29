@@ -21,19 +21,19 @@ Instead of scrolling endlessly through your camera roll, SnapSense turns screens
 
 ## Tech Stack
 
-Frontend:
+- Frontend:
     ```bash
     Next.js (App Router)
     React
     Tailwind CSS
     ```
-Backend:
+- Backend:
     ```bash
    FastAPI (Python)
    Tesseract OCR
    PIL (image preprocessing)
     ```
-Database:
+- Database:
   ```bash
   Supabase (PostgreSQL)
     ```
