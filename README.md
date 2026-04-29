@@ -37,3 +37,16 @@ Instead of scrolling endlessly through your camera roll, SnapSense turns screens
   ```bash
   Supabase (PostgreSQL)
     ```
+
+### Setup instructions:
+git clone https://github.com/your-username/snapsense.git
+cd snapsense
+cd backend
+python -m venv .venv
+.venv\Scripts\activate  # Windows
+pip install -r requirements.txt
+uvicorn main:app --reload
+run frontend:
+cd frontend
+npm install
+npm run dev
