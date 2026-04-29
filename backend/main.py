@@ -4,6 +4,12 @@ from PIL import Image, ImageOps
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from supabase import create_client, Client
+
+SUPABASE_URL = "https://bkeajqtbpkvnmiapwqkh.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrZWFqcXRicGt2bm1pYXB3cWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0MTQ2MzYsImV4cCI6MjA5Mjk5MDYzNn0.nk-I1ejiecH7VmQh1gcJsMVmQttXkuQW4nLXrFXxAkU"
+
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
