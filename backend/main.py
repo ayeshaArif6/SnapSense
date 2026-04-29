@@ -94,6 +94,7 @@ async def upload_file(file: UploadFile = File(...)):
         "category": category,
     }
 
+    supabase.table("screenshots").insert(screenshot_data).execute()
     screenshots.append(screenshot_data)
 
     return {
@@ -103,4 +104,5 @@ async def upload_file(file: UploadFile = File(...)):
 
 @app.get("/screenshots")
 def get_screenshots():
-    return screenshots
+    response = supabase.table("screenshots").select("*").order("created_at", desc=True).execute()
+    return response.data
